@@ -6,6 +6,7 @@ register = template.Library()   # Decorater
 @register.filter(name="is_in_cart")
 def is_in_cart(item, cart):                       # cart ---> key, value pair in this product and qty
     keys = cart.keys()
+    print(list(keys))
     for id in keys:
         if int(id) == item.id:
             return True

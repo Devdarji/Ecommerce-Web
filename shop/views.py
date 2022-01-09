@@ -176,15 +176,15 @@ class EditProfile(FormView):
 
         return redirect('profile')
 
-# ----------------------- home Page --------------------------------
 
 
-def home(request):
+# --------------------- Add Item In Cart Function ---------------------
+
+def addToCart(request):
     # request.session.get('cart').clear()
     cart = request.session.get('cart')
     if not cart:
         request.session['cart'] = {}
-    items = Item.objects.all().order_by('-stock')
     if request.method == "POST":
         item = request.POST.get('item')
         remove = request.POST.get('remove')
@@ -201,14 +201,26 @@ def home(request):
                 else:
                     cart[item] = quantity + 1
             else:
-                cart[item] =  1
+                cart[item] = 1
         else:
             cart = {}
             cart[item] = 1
 
         request.session['cart'] = cart
+        if None in request.session['cart']:
+            print(True)
+            del request.session['cart'][None]
+        if 'null' in request.session['cart']:
+            print(True)
+            del request.session['cart']['null']
         print(request.session['cart'])
         return redirect("home")
+# ----------------------- home Page --------------------------------
+
+
+def home(request):
+    items = Item.objects.all().order_by('-stock')
+    addToCart(request)
     context = {
         'items': items
     }
@@ -219,6 +231,7 @@ def home(request):
 
 def allItems(request):
     items = Item.objects.all()
+    addToCart(request)
     params = {}
     sort = ''
 
@@ -278,6 +291,7 @@ class BrandCategory(ListView):
 
     # Order and Sort
     def post(self, request, *args, **kwargs):
+        addToCart(request)
         context = self.get_context_data(*args, **kwargs)
         brand_id = request.POST.get("brand_id")
         if request.POST.get("sort"):
@@ -306,7 +320,6 @@ class BrandCategory(ListView):
 class ItemCategory(ListView):
     model = Category
     template_name = "item_category.html"
-
     def get_context_data(self, *args, **kwargs):
         queryset = kwargs.pop("object_list", None)
         if queryset is None:
@@ -329,6 +342,7 @@ class ItemCategory(ListView):
 
     # Order and Sort
     def post(self, request, *args, **kwargs):
+        addToCart(request)
         context = self.get_context_data(*args, **kwargs)
         category_id = request.POST.get("category_id")
         if request.POST.get("sort"):
