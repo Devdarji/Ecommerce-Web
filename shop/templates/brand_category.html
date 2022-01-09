@@ -1,0 +1,105 @@
+{% extends 'base.html' %} 
+{% block shopActive %} active{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-xl-3 col-lg-4 col-md-5 mt-5 pt-5">
+            <div class="sidebar-categories">
+                <div class="head">Filters</div>
+                <div class="common-filter mt-3">
+                    <div>
+                        <h5>Sort</h5>
+                    </div>
+                    <form method="POST">
+                        {% csrf_token %} {% if items %}
+                        <input hidden type="text" value="{{items.0.brand_id}}" name="brand_id" />
+                        {% endif %}
+                        <ul>
+                            <li class="filter-list">
+                                <input class="pixel-radio" type="radio" id="a-z" value="a-z" name="sort" />
+                                <label for="a-z">Name: A - Z</label>
+                            </li>
+                            <li class="filter-list">
+                                <input class="pixel-radio" type="radio" id="z-a" value="z-a" name="sort" />
+                                <label for="z-a">Name: Z - A</label>
+                            </li>
+                            <li class="filter-list">
+                                <input class="pixel-radio" type="radio" id="high-low" value="high-low" name="sort" />
+                                <label for="high-low">Price: High - Low</label>
+                            </li>
+                            <li class="filter-list">
+                                <input class="pixel-radio" type="radio" id="low-high" value="low-high" name="sort" />
+                                <label for="low-high">Price: Low - High</label>
+                            </li>
+                        </ul>
+                        <div class="text-center justify-content-center mt-2">
+                            <button type="submit" value="Submit" class="btn-primary btn-block">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="sidebar-categories mt-3">
+                <div class="head">Brands</div>
+                <ul class="main-categories">
+                    {% for brand in object_list %}
+                    <li class="main-nav-list">
+                        <form id="my_form_{{brand.brand.id}}" method="POST">
+                            {% csrf_token %}
+                            <input hidden type="text" name="brand_id" value="{{brand.brand.id}}" />
+                            <a href="javascript:{}"
+                                onclick="document.getElementById('my_form_{{brand.brand.id}}').submit();"><span
+                                    class="lnr lnr-arrow-right"></span>{{brand.brand.title}} ({{brand.items}})</a>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xl-9 col-lg-8 col-md-7">
+            <!-- Start related-product Area -->
+            <section class="related-product-area section_gap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <!-- single product -->
+                                {% for item in items %}
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="single-product">
+                                        <img class="img-fluid" src="{{item.image.url}}" alt="" />
+                                        <div class="product-details">
+                                            <h6><a href="{% url 'itemDetail' item.id item.slug %}">{{item.title}}</a>
+                                            </h6>
+                                            <div class="price">
+                                                <h6>{{item.price}}</h6>
+                                            </div>
+                                            <div class="prd-bottom">
+                                                <a href="" class="social-info">
+                                                    <span class="ti-bag"></span>
+                                                    <p class="hover-text">add to bag</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- single product -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- End related-product Area -->
+        </div>
+    </div>
+</div>
+
+<script>
+    {% if sort %}
+    document.getElementById("{{sort}}").checked = true
+    {% endif %}
+</script>
+{% endblock %}

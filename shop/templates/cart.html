@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cart %}
+{% load custom_filter %}
+{% block content %}
+<!--================Cart Area =================-->
+<div class="container mt-5">
+    <section class="cart_area">
+        <div class="container">
+            <div class="cart_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img class="rounded-circle" width="80px" src="{{item.image.url}}" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <p>{{item.title}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5>{{item.price|currency}}</h5>
+                                </td>
+                                <td>
+                                    {{item|cart_qty:request.session.cart}}
+                                </td>
+                                <td>
+                                    <h5>{{item|item_total:request.session.cart|currency}}</h5>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="2"></td>
+                                <td>
+                                    <h4>Subtotal</h4>
+                                </td>
+                                <td>
+                                    <h4>{{items|cart_total:request.session.cart|currency}}</h4>
+                                </td>
+                            </tr>
+
+                            <tr class="out_button_area text-right">
+                                <td colspan="4" class="checkout-btn">
+                                    <div class="checkout_btn_inner">
+                                        <a class="primary-btn" href="#">Checkout</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!--================End Cart Area =================-->
+
+{% endblock %}

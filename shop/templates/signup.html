@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+      <div class="col-first">
+        <h1>Login/Signup</h1>
+        <nav class="d-flex align-items-center">
+          <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+          <a href="#">Login/Signup</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================SignUp Box Area =================-->
+<section class="login_box_area section_gap">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="login_box_img">
+          <img class="img-fluid" src="{% static 'img/login.jpg' %}" alt="" />
+          <div class="hover">
+            <h4>Already Exist to our website?</h4>
+            <p>There are advances being made in science and technology everyday, and a good example of this is the</p>
+            <a class="primary-btn" href="{% url 'login' %}">Login</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="login_form_inner">
+          <h3>Sign Up to enter</h3>
+          {% for message in messages %}
+          <p><strong>{{message}}</strong></p>
+          {% endfor %}
+          <form class="row login_form" method="post" id="contactForm" novalidate="novalidate">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Name</label>
+              {{form.username}}
+            </div>
+
+            <div class="form-group">
+              <label>E-Mail Address</label>
+              {{form.email}}
+            </div>
+
+            <div class="form-group">
+              <label>Password</label>
+              {{form.password1}}
+            </div>
+
+            <div class="form-group">
+              <label>Confirm Password</label>
+              {{form.password2}}
+            </div>
+
+            <div class="form-group m-0">
+              <button type="submit" class="btn primary-btn btn-block">Sign Up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================End SIgnUp Box Area =================-->
+
+<script>
+  // document.getElementById("id_username").className = "form-control";
+  // document.getElementById("id_email").className = "form-control";
+  // document.getElementById("id_password1").className = "form-control";
+  // document.getElementById("id_password2").className = "form-control";
+</script>
+
+{% endblock %}

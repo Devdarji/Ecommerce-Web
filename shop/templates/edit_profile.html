@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% load crispy_forms_tags %} {% block content %} {% load widget_tweaks %}
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+      <div class="col-first">
+        <h1>Edit Profile</h1>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Banner Area -->
+<div class="m-5">
+  <div class="container bg-white col-md-6">
+    {% for message in messages %}
+    <p><strong>{{message}}</strong></p>
+    {% endfor %} {% if user.is_authenticated %}
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        {% render_field form.first_name value=user.first_name class="form-control" placeholder="First Name" %}
+      </div>
+      <div class="form-group">
+        {% render_field form.last_name value=user.profile.last_name class="form-control" placeholder="Last Name" %}
+      </div>
+      <div class="form-group">
+        <input disabled type="email" value="{{user.email}}" placeholder="Email" class="single-input-primary" />
+      </div>
+      <div class="form-group">
+        {% render_field form.mobile_no value=user.profile.mobile_no class="form-control" placeholder="Mobile No"%}
+      </div>
+      <div class="form-group">
+        {% render_field form.alternate_mobile_no value=profile.alternate_mobile_no class="form-control" placeholder="Alternative Mobile No"%}
+      </div>
+      <div class="form-group">
+        {% render_field form.address_line1 value=address.address_line1  class="form-control"  placeholder="Address Line 1"%}
+      </div>
+      <div class="form-group">
+        {% render_field form.address_line2 value=address.address_line2  class="form-control"  placeholder="Address Line 2"%}
+      </div>
+      <div class="form-group">{% render_field form.city value=address.city  class="form-control"  placeholder="Address Line 2"%}</div>
+      <div class="form-group">{% render_field form.state value=address.state  class="form-control"  placeholder="Address Line 2"%}</div>
+      <div class="form-group">{% render_field form.zipcode value=address.zipcode  class="form-control"  placeholder="Address Line 2"%}</div>
+      <div class="form-group">{% render_field form.country value=address.country  class="form-control"  placeholder="Address Line 2"%}</div>
+      <div class="text-center">
+        <button class="primary-btn" type="submit">Update Profile</button>
+      </div>
+    </form>
+    {% else %}
+    <p>Something Went Wrong</p>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  document.getElementById("id_first_name").className = "form-control";
+  document.getElementById("id_last_name").className = "form-control";
+  document.getElementById("id_email").className = "form-control";
+  document.getElementById("id_mobile_no").className = "form-control";
+  document.getElementById("id_alternate_mobile_no").className = "form-control";
+  document.getElementById("id_address_line1").className = "form-control";
+  document.getElementById("id_address_line2").className = "form-control";
+  document.getElementById("id_city").className = "form-control";
+  document.getElementById("id_state").className = "form-control";
+  document.getElementById("id_zipcode").className = "form-control";
+  document.getElementById("id_country").className = "form-control";
+  document.getElementById("id_email").setAttribute("readonly", true);
+</script>
+{% endblock %}
+
+<!-- Reference -->
+
+<!-- https://www.javatpoint.com/how-to-use-django-widget-tweaks -->
